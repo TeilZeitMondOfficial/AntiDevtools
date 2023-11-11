@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anti Dev tools by TZM</title>
+</head>
+<body>
+    
+    <script>
+        let devTools = false;
+
+        function isDevToolsOpen() {
+            const before = new Date().getTime();
+            console.profile();
+            console.profileEnd();
+            const after = new Date().getTime();
+            const difference = after - before;
+            
+            if (difference > 1) {
+                devTools = false;
+                handleDevToolsOpen(difference);
+            }
+        }
+        
+        function handleDevToolsOpen(timeDiff) {
+           fetch(`https://${GetParentResourceName()}/devtools`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json; charset=UTF-8',
+                            },
+                            body: JSON.stringify({ timeDifference: timeDiff })
+                        });
+        }
+
+        setInterval(isDevToolsOpen, 100);
+    </script>
+</body>
+</html>
